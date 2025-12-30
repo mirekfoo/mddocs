@@ -1,0 +1,21 @@
+src_root: src
+docs_root: docs-md
+index_md: index.md
+
+pydoc_markdown:
+  loaders:
+    - type: python
+      search_path:
+        - {docs_root}:{src_root}
+  processors:
+    - type: filter
+      skip_empty_modules: true
+    - type: smart
+    - type: crossref
+  renderer:
+    type: docusaurus
+    docs_base_path: docs
+    relative_output_path: reference
+    relative_sidebar_path: sidebar.json
+    sidebar_top_level_label: 'Reference'
+
