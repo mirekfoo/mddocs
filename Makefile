@@ -50,8 +50,13 @@ PROJECT_SRC := $(wildcard src/mddocs/*.py)
 
 MDDOCS_GENERATE = mddocs_generate.done
 
+PYDOC_MARKDOWN_GENERATE = pydoc-markdown_generate.done
+
+pydoc-markdown-generate: $(MDDOCS_INSTALL) $(MDDOCS_DIR) $(PYUTILS)
+	pushd $(MDDOCS_DIR) && pydoc-markdown && popd 
+
 $(MDDOCS_GENERATE): $(MDDOCS_INSTALL) $(PROJECT_SRC)
-	python -m mddocs 
+	PYTHONPATH=./src python -m mddocs 
 	touch $(MDDOCS_GENERATE)
 
 #MDDOCS_INDEX_MD_TABLE = mddocs_index_md_table.done
@@ -67,6 +72,11 @@ mddocs-build: \
 
 mddocs-clean:
 	rm -rf $(MDDOCS_DIR)
+	rm -f $(MDDOCS_GENERATE)
+
+mddocs-run: \
+	mddocs-clean \
+	$(MDDOCS_GENERATE)
 
 # --------------------------------------------------
 

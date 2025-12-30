@@ -6,7 +6,8 @@ pydoc_markdown:
   loaders:
     - type: python
       search_path:
-        - {docs_root}:{src_root}
+        #- "{{docs_root}}:{{src_root}}"
+        - "{{relative_to(docs_root, src_root)}}"
   processors:
     - type: filter
       skip_empty_modules: true

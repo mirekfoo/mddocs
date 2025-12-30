@@ -44,16 +44,16 @@ def collect_doc_ids(node: Any) -> List[str]:
     return ids
 
 
-def find_file(docs_root: Path, doc_id: str) -> Optional[Path]:
+def find_file(docs_dir: Path, doc_id: str) -> Optional[Path]:
     # Try direct md, then index.md inside folder
-    candidate = docs_root / (doc_id + ".md")
+    candidate = docs_dir / (doc_id + ".md")
     if candidate.exists():
         return candidate
-    candidate = docs_root / doc_id / "index.md"
+    candidate = docs_dir / doc_id / "index.md"
     if candidate.exists():
         return candidate
     # Try without any leading ./ or / (sanitise)
-    candidate = docs_root / doc_id.lstrip("/")
+    candidate = docs_dir / doc_id.lstrip("/")
     if candidate.exists():
         return candidate
     # Not found
@@ -130,7 +130,7 @@ def get_first_md_doc_sentence(filepath):
         # If no sentence delimiter is found, return the text as is.
         return text
 
-def generate_table(sidebar_path: Path, docs_root: Path) -> str:
+def generate_table(sidebar_path: Path, docs_dir: Path) -> str:
     data = load_sidebar(sidebar_path)
     ids = collect_doc_ids(data)
     lines = ["| Page | Info |", "| --- | --- |"]
@@ -139,11 +139,11 @@ def generate_table(sidebar_path: Path, docs_root: Path) -> str:
         if doc_id in seen:
             continue
         seen.add(doc_id)
-        fp = find_file(docs_root, doc_id)
+        fp = find_file(docs_dir, doc_id)
         title = extract_title(fp) or Path(doc_id).name
         info = get_first_md_doc_sentence(fp)
         if fp:
-            rel = os.path.relpath(fp, docs_root)
+            rel = os.path.relpath(fp, docs_dir)
             rel = rel.replace(os.sep, "/")
         else:
             # If file not found, link to the doc id as a path
@@ -155,19 +155,19 @@ def generate_table(sidebar_path: Path, docs_root: Path) -> str:
 def main() -> int:
     p = argparse.ArgumentParser(description="Generate markdown table from sidebar.json")
     p.add_argument("--sidebar", required=True, help="Path to sidebar.json")
-    p.add_argument("--docs-root", required=True, help="Docs root directory")
+    p.add_argument("--docs-dir", required=True, help="Docs generated directory")
     p.add_argument("--out", help="Output file (defaults to stdout)")
     args = p.parse_args()
 
     sidebar = Path(args.sidebar)
-    docs_root = Path(args.docs_root)
+    docs_dir = Path(args.docs_dir)
 
     if not sidebar.exists():
         raise SystemExit(f"sidebar file not found: {sidebar}")
-    if not docs_root.exists():
-        raise SystemExit(f"docs root not found: {docs_root}")
+    if not docs_dir.exists():
+        raise SystemExit(f"docs dir not found: {docs_dir}")
 
-    md = generate_table(sidebar, docs_root)
+    md = generate_table(sidebar, docs_dir)
 
     if args.out:
         Path(args.out).write_text(md, encoding="utf-8")
