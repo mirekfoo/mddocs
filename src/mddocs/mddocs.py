@@ -82,6 +82,39 @@ def read_config_arg(args: Dict, arg: str, defval: Any) -> Any:
         print(f"Error: '{arg}' not defined.")
         sys.exit(1)
 
+def read_config_harg(args: Dict, arg: str, defval: Any) -> Any:
+    """
+    Read a hierarchical configuration argument from a dictionary.
+
+    Args:
+        args: The dictionary containing configuration arguments.
+        arg: The dot-separated key to look for in the dictionary.
+        defval: The default value to return if the key is not found. If None, the argument is required.
+
+    Returns:
+        The value associated with the key or the default value.
+    """
+
+    val = args
+    arg_split = arg.split(".")
+    
+    for a in arg_split:
+        if a in val:
+            val = val[a]
+        else:
+            val = None
+            break
+
+    if val is not None:
+        return val
+    elif defval is not None:
+        return defval
+    else:
+        #raise SystemExit(f"Error: '{arg}' not defined.")
+        print(f"Error: '{arg}' not defined.")
+        sys.exit(1)
+
+
 def run() -> int:
     """
     Run the main function.
@@ -99,39 +132,43 @@ def run() -> int:
     Returns:
         The exit code of the program.
     """
-    
+    # 1. Initializes the Jinja2 environment and global functions.
     global jinja2_env
     jinja2_env = Environment()
     jinja2_env.globals["relative_to"] = relative_to
 
+    # 2. Parses command-line arguments.
     p = argparse.ArgumentParser(description="Generate markdown docs for python project.")
     args = p.parse_args()
 
+    # 3. Loads the 'mddocs.yml' configuration file.
     mddocs_yml = Path("mddocs.yml")
     if not mddocs_yml.exists():
         raise SystemExit(f"mddocs.yml not found: {mddocs_yml}")
 
     config = yaml.safe_load(mddocs_yml.read_text())
-    #print(type(config))
-    #print(config)
 
     src_root = read_config_arg(config, "src_root", "src")
     docs_root = read_config_arg(config, "docs_root", "docs-md")
     index_md = read_config_arg(config, "index_md", "index.md")
+    docs_dir = read_config_harg(config, "pydoc_markdown.renderer.docs_base_path", "docs")    
+    docs_reference_dir = read_config_harg(config, "pydoc_markdown.renderer.relative_output_path", "reference")    
     pydoc_markdown = read_config_arg(config, "pydoc_markdown", {})
 
+    # 4. Prepares the documentation output directory.
     docs_root_path = Path(docs_root)
     docs_root_path.mkdir(parents=True, exist_ok=True)
 
+    # 5. Expands templates in the configuration and writes 'pydoc-markdown.yml'.
     pydoc_markdown = expandTemplates(pydoc_markdown, config)
-    #print(pydoc_markdown)
 
     with open(Path(docs_root, "pydoc-markdown.yml"), "w") as f:
         yaml.dump(pydoc_markdown, f)
 
-    docs_reference_path = Path(docs_root, "docs", "reference")
+    docs_reference_path = Path(docs_root, docs_dir, docs_reference_dir)
     docs_reference_path.mkdir(parents=True, exist_ok=True)
 
+    # 6. Ensures a 'sidebar.json' exists to work around pydoc-markdown issues.
     sidebar_json_empty_file = Path(Path(__file__).parent, "sidebar.json")
     if not sidebar_json_empty_file.exists():
         print(f"Error: Missing install file: {sidebar_json_empty_file}")
@@ -145,19 +182,20 @@ def run() -> int:
     if not docs_reference_sidebar_json_file.exists():
         shutil.copy(sidebar_json_empty_file, docs_reference_sidebar_json_file)
 
+    # 7. Executes the 'pydoc-markdown' tool.
     print(f"Running pydoc-markdown in {docs_root} ...")
     result = subprocess.run(["pydoc-markdown"], cwd=docs_root)
     if result.returncode != 0:
         return result.returncode
     
+    # 8. Generates the reference index markdown table.
     docs_reference_index_md_file = Path(docs_reference_path, index_md)
     print(f"Generating {docs_reference_index_md_file} ...")
-    result = subprocess.run([sys.executable, "-m", "mddocs.gen_index_md_table", "--sidebar", docs_reference_sidebar_json_file, "--docs-dir", Path(docs_root, "docs"), "--out", docs_reference_index_md_file])
+    result = subprocess.run([sys.executable, "-m", "mddocs.gen_index_md_table", "--sidebar", docs_reference_sidebar_json_file, "--docs-dir", Path(docs_root, docs_dir), "--out", docs_reference_index_md_file])
     if result.returncode != 0:
         return result.returncode
 
     return 0
-
 
 def main() -> int:
     """

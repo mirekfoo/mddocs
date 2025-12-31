@@ -22,11 +22,28 @@ from enum import Enum
 
 
 def load_sidebar(path: Path) -> Any:
+    """Load and parse a sidebar.json file.
+
+    Args:
+        path: Path to the JSON file.
+
+    Returns:
+        The parsed JSON data.
+    """
+
     with path.open("r", encoding="utf-8") as fh:
         return json.load(fh)
 
 
 def collect_doc_ids(node: Any) -> List[str]:
+    """Collect document IDs from a sidebar.json node.
+
+    Args:
+        node: The node to collect IDs from.
+
+    Returns:
+        A list of document IDs.
+    """
     ids: List[str] = []
     if isinstance(node, dict):
         for k, v in node.items():
@@ -45,6 +62,15 @@ def collect_doc_ids(node: Any) -> List[str]:
 
 
 def find_file(docs_dir: Path, doc_id: str) -> Optional[Path]:
+    """Find the file corresponding to a document ID.
+
+    Args:
+        docs_dir: The directory containing the documents.
+        doc_id: The document ID to find.
+
+    Returns:
+        The path to the document file, or None if not found.
+    """
     # Try direct md, then index.md inside folder
     candidate = docs_dir / (doc_id + ".md")
     if candidate.exists():
@@ -61,6 +87,14 @@ def find_file(docs_dir: Path, doc_id: str) -> Optional[Path]:
 
 
 def extract_title(path: Optional[Path]) -> Optional[str]:
+    """Extract the title from a document file.
+
+    Args:
+        path: The path to the document file.
+
+    Returns:
+        The title of the document, or None if not found.
+    """
     if path is None or not path.exists():
         return None
     text = path.read_text(encoding="utf-8")
@@ -81,11 +115,20 @@ def extract_title(path: Optional[Path]) -> Optional[str]:
     return path.stem
 
 class HeaderParseState(Enum):
+    """Enum for header parsing state."""
     BEFORE_HEADER = 1
     IN_HEADER = 2
     AFTER_HEADER = 3
 
-def get_first_md_doc_sentence(filepath):
+def get_first_md_doc_sentence(filepath: Path) -> str:
+    """Get the first sentence of a markdown document.
+
+    Args:
+        filepath: The path to the markdown document.
+
+    Returns:
+        The first sentence of the document.
+    """
     content_before_chapter = []
     
     try:
@@ -131,6 +174,15 @@ def get_first_md_doc_sentence(filepath):
         return text
 
 def generate_table(sidebar_path: Path, docs_dir: Path) -> str:
+    """Generate a table of contents for a markdown document.
+
+    Args:
+        sidebar_path: The path to the sidebar.json file.
+        docs_dir: The directory containing the documents.
+
+    Returns:
+        A string containing the table of contents.
+    """
     data = load_sidebar(sidebar_path)
     ids = collect_doc_ids(data)
     lines = ["| Page | Info |", "| --- | --- |"]
@@ -153,6 +205,7 @@ def generate_table(sidebar_path: Path, docs_dir: Path) -> str:
 
 
 def main() -> int:
+    """Main function."""
     p = argparse.ArgumentParser(description="Generate markdown table from sidebar.json")
     p.add_argument("--sidebar", required=True, help="Path to sidebar.json")
     p.add_argument("--docs-dir", required=True, help="Docs generated directory")
