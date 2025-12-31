@@ -142,7 +142,8 @@ def run() -> int:
         description=(
             "Generate markdown docs for python project.\n"
             "See https://github.com/mirekfoo/mddocs/blob/main/README.md for more information."
-            )
+            ),
+        formatter_class=argparse.RawDescriptionHelpFormatter
     )
     args = p.parse_args()
 
