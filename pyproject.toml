@@ -46,7 +46,10 @@ dev = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-"mddocs" = ["py.typed"]
+"mddocs" = [
+  "py.typed",
+  "sidebar.json"
+]
 
 [project.scripts]
 mddocs = "mddocs.__main__:main"
