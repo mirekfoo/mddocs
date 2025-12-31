@@ -5,4 +5,4 @@ Markdown Documentation generator for python projects
 
 Docs|
 ---|
-[Markdown docs](docs-md/docs/index.md)
+[Markdown docs](docs-md/docs/reference/index.md)
