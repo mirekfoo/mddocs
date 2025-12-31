@@ -165,6 +165,7 @@ def run() -> int:
     with open(Path(docs_root, "pydoc-markdown.yml"), "w") as f:
         yaml.dump(pydoc_markdown, f)
 
+    docs_path = Path(docs_root, docs_dir)
     docs_reference_path = Path(docs_root, docs_dir, docs_reference_dir)
     docs_reference_path.mkdir(parents=True, exist_ok=True)
 
@@ -189,9 +190,9 @@ def run() -> int:
         return result.returncode
     
     # 8. Generates the reference index markdown table.
-    docs_reference_index_md_file = Path(docs_reference_path, index_md)
+    docs_reference_index_md_file = Path(docs_path, index_md)
     print(f"Generating {docs_reference_index_md_file} ...")
-    result = subprocess.run([sys.executable, "-m", "mddocs.gen_index_md_table", "--sidebar", docs_reference_sidebar_json_file, "--docs-dir", Path(docs_root, docs_dir), "--out", docs_reference_index_md_file])
+    result = subprocess.run([sys.executable, "-m", "mddocs.gen_index_md_table", "--sidebar", docs_reference_sidebar_json_file, "--docs-dir", docs_path, "--out", docs_reference_index_md_file])
     if result.returncode != 0:
         return result.returncode
 
