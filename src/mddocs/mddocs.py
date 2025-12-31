@@ -140,7 +140,7 @@ def run() -> int:
     # 2. Parses command-line arguments.
     p = argparse.ArgumentParser(
         description=(
-            "Generate markdown docs for python project.\n",
+            "Generate markdown docs for python project.\n"
             "See https://github.com/mirekfoo/mddocs/blob/main/README.md for more information."
             )
     )
