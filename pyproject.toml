@@ -9,7 +9,7 @@ description = "Markdown Documentation generator for python projects."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
-authors = [ "Mirek Forczek <mirekforczek@poczta.onet.pl>" ]
+authors = [ { name = "Mirek Forczek", email = "mirekforczek@poczta.onet.pl" } ]
 dependencies = [
   "pydoc-markdown>=4.8.2"
 ]
