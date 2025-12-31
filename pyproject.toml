@@ -49,7 +49,7 @@ where = ["src"]
 "mddocs" = ["py.typed"]
 
 [project.scripts]
-mkdocs = "mddocs.__main__:main"
+mddocs = "mddocs.__main__:main"
 
 [tool.bumpver]
 current_version = "0.0.0"
