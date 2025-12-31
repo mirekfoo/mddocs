@@ -36,6 +36,7 @@ Repository = "https://github.com/mirekfoo/mddocs"
 Changelog = "https://github.com/mirekfoo/mddocs/releases"
 
 
+
 [project.optional-dependencies]
 dev = [
   "bumpver"
@@ -46,6 +47,9 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "mddocs" = ["py.typed"]
+
+[project.scripts]
+mkdocs = "mddocs.__main__:main"
 
 [tool.bumpver]
 current_version = "0.0.0"
