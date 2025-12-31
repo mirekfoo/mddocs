@@ -138,7 +138,12 @@ def run() -> int:
     jinja2_env.globals["relative_to"] = relative_to
 
     # 2. Parses command-line arguments.
-    p = argparse.ArgumentParser(description="Generate markdown docs for python project.\n\nSee https://github.com/mirekfoo/mddocs/blob/main/README.md for more information.")
+    p = argparse.ArgumentParser(
+        description=(
+            "Generate markdown docs for python project.\n",
+            "See https://github.com/mirekfoo/mddocs/blob/main/README.md for more information."
+            )
+    )
     args = p.parse_args()
 
     # 3. Loads the 'mddocs.yml' configuration file.
