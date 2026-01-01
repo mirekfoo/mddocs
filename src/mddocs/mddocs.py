@@ -150,7 +150,7 @@ def run() -> int:
     # 3. Loads the 'mddocs.yml' configuration file.
     mddocs_yml = Path("mddocs.yml")
     if not mddocs_yml.exists():
-        raise SystemExit(f"mddocs.yml not found: {mddocs_yml}")
+        raise SystemExit(f"File not found: {mddocs_yml}")
 
     config = yaml.safe_load(mddocs_yml.read_text())
 
