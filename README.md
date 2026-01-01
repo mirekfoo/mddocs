@@ -3,7 +3,7 @@ Markdown Documentation generator for Python projects.
 
 # Intro
 
-* Since modern platfroms such as **code repoitories** ([GitHub](https://github.com)), **IDE**(s) ([VSCode]()), **web browsers** can render markdown files - the project docs just in Markdown become an alternative to HTML docs.
+* Since modern platfroms such as **code repoitories**, **IDE**(s), **web browsers** can render Markdown files - the project docs just in Markdown become an alternative to HTML docs.
 * This project focuses on providing a complete set of markdown files for full navigation to all documentation pages.
     - In it's final step it will generate the main `index.md` file upon [pydoc_markdown](https://github.com/NiklasRosenstein/pydoc-markdown) [docusaurus](https://niklasrosenstein.github.io/pydoc-markdown/api/pydoc_markdown/renderers/docusaurus/) generated `sidebar.json` file.
 * This solution is build on top of [pydoc_markdown](https://github.com/NiklasRosenstein/pydoc-markdown) [docusaurus](https://niklasrosenstein.github.io/pydoc-markdown/api/pydoc_markdown/renderers/docusaurus/).
@@ -13,7 +13,7 @@ Markdown Documentation generator for Python projects.
 
 ## Setup
 
-* Install mddocs:
+* Install `mddocs`:
 ```bash
 pip install git+https://github.com/mirekfoo/mddocs.git
 ```
@@ -22,8 +22,7 @@ pip install git+https://github.com/mirekfoo/mddocs.git
     - See examples:
         - [mddocs.yml](./mddocs.yml) for this project.
         - [mddocs.yml](https://github.com/mirekfoo/mddocs-test/blob/main/mddocs.yml) for [test](https://github.com/mirekfoo/mddocs-test) project.
-    - For `pydoc_markdown` section refer to [pydoc_markdown docs](https://niklasrosenstein.github.io/pydoc-markdown/) .
-    - 
+    - For `pydoc_markdown` section refer to [pydoc_markdown docs](https://niklasrosenstein.github.io/pydoc-markdown/).
 
 ## Generate docs
 
