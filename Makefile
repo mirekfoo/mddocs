@@ -7,6 +7,7 @@ help:
 	@echo ""
 	@echo "  mddocs-build                             - Build markdown docs using mddocs"
 	@echo "  mddocs-clean                             - Clean the markdown docs"
+	@echo "  mddocs-run                               - Run again mddocs to update docs"	
 	@echo ""
 	@echo "  bumpver LEVEL=major|minor|patch          - Bump version"
 	
@@ -40,12 +41,6 @@ $(MDDOCS_INSTALL):
 
 MDDOCS_DIR = docs-md
 
-#$(MDDOCS_DIR):
-#	@if [ ! -d "$(MDDOCS_DIR)" ]; then mkdir -p "$(MDDOCS_DIR)"; fi
-
-#mddocs-bootstrap: $(MDDOCS_INSTALL) $(MDDOCS_DIR)
-#	pushd $(MDDOCS_DIR) && pydoc-markdown --bootstrap docusaurus && popd
-
 PROJECT_SRC := $(wildcard src/mddocs/*.py)
 
 MDDOCS_GENERATE = mddocs_generate.done
@@ -58,14 +53,6 @@ pydoc-markdown-generate: $(MDDOCS_INSTALL) $(MDDOCS_DIR) $(PYUTILS)
 $(MDDOCS_GENERATE): $(MDDOCS_INSTALL) $(PROJECT_SRC)
 	PYTHONPATH=./src python -m mddocs 
 	touch $(MDDOCS_GENERATE)
-
-#MDDOCS_INDEX_MD_TABLE = mddocs_index_md_table.done
-
-# $(MDDOCS_INDEX_MD_TABLE): $(MDDOCS_GENERATE)
-# 	python scripts/mddocs/gen_index_md_table.py \
-# 		--sidebar $(MDDOCS_DIR)/docs/reference/sidebar.json \
-# 		--docs-root $(MDDOCS_DIR)/docs \
-# 		--out $(MDDOCS_DIR)/docs/index.md
 
 mddocs-build: \
 	$(MDDOCS_GENERATE)
