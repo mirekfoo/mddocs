@@ -1,11 +1,13 @@
 # mddocs
-Markdown Documentation generator for python projects
+Markdown Documentation generator for Python projects.
 
 # Intro
 
-...
+* Since modern platfroms such as **code repoitories** ([GitHub](https://github.com)), **IDE**(s) ([VSCode]()), **web browsers** can render markdown files - the project docs just in Markdown become an alternative to HTML docs.
+* This project focuses on providing a complete set of markdown files for full navigation to all documentation pages.
+    - In it's final step it will generate the main `index.md` file upon [pydoc_markdown](https://github.com/NiklasRosenstein/pydoc-markdown) [docusaurus](https://niklasrosenstein.github.io/pydoc-markdown/api/pydoc_markdown/renderers/docusaurus/) generated `sidebar.json` file.
+* This solution is build on top of [pydoc_markdown](https://github.com/NiklasRosenstein/pydoc-markdown) [docusaurus](https://niklasrosenstein.github.io/pydoc-markdown/api/pydoc_markdown/renderers/docusaurus/).
 
-* This solution is build on top of [pydoc_markdown](https://github.com/NiklasRosenstein/pydoc-markdown) [docusaurus]() .
 
 # Usage
 
