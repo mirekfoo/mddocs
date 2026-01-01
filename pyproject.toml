@@ -11,7 +11,8 @@ requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [ { name = "Mirek Forczek", email = "mirekforczek@poczta.onet.pl" } ]
 dependencies = [
-  "pydoc-markdown>=4.8.2"
+  "pydoc-markdown>=4.8.2",
+  "pyutils @ git+https://github.com/mirekfoo/pyutils.git"
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",

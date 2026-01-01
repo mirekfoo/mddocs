@@ -33,6 +33,15 @@ mkdocs-clean:
 
 # --------------------------------------------------
 
+PYUTILS_INSTALL = pyutils-install.done
+
+$(PYUTILS_INSTALL):
+	git clone https://github.com/mirekfoo/pyutils.git
+	pip install -e pyutils
+	touch $(PYUTILS_INSTALL)
+
+# --------------------------------------------------
+
 MDDOCS_INSTALL = mddocs-install.done
 
 $(MDDOCS_INSTALL):
@@ -47,10 +56,10 @@ MDDOCS_GENERATE = mddocs_generate.done
 
 PYDOC_MARKDOWN_GENERATE = pydoc-markdown_generate.done
 
-pydoc-markdown-generate: $(MDDOCS_INSTALL) $(MDDOCS_DIR) $(PYUTILS)
+pydoc-markdown-generate: $(MDDOCS_INSTALL) $(MDDOCS_DIR) 
 	pushd $(MDDOCS_DIR) && pydoc-markdown && popd 
 
-$(MDDOCS_GENERATE): $(MDDOCS_INSTALL) $(PROJECT_SRC)
+$(MDDOCS_GENERATE): $(PYUTILS_INSTALL) $(MDDOCS_INSTALL) $(PROJECT_SRC)
 	PYTHONPATH=./src python -m mddocs 
 	touch $(MDDOCS_GENERATE)
 
