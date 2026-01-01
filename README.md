@@ -46,3 +46,7 @@ mddocs
 Docs|
 ---|
 [Markdown docs](docs-md/docs/index.md)
+
+# Project Development
+
+* Type `make help` for available **dev** procedures
