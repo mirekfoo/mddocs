@@ -12,24 +12,6 @@ from jinja2 import Template, Environment
 
 from pyutils import config_util, jinja2_util
 
-jinja2_env = None
-
-def relative_to(master_path: str, slave_path: str) -> str:
-    """
-    Calculate the relative path from master_path to slave_path.
-
-    Args:
-        master_path: The base directory path.
-        slave_path: The target path to make relative.
-
-    Returns:
-        The relative path from master_path to slave_path.
-    """
-    
-    rel_path =  Path(slave_path).relative_to(master_path, walk_up=True)
-    return rel_path
-
-
 def run() -> int:
     """
     Run the main function.
@@ -47,10 +29,6 @@ def run() -> int:
     Returns:
         The exit code of the program.
     """
-    # 1. Initializes the Jinja2 environment and global functions.
-    global jinja2_env
-    jinja2_env = Environment()
-    jinja2_env.globals["relative_to"] = relative_to
 
     # 2. Parses command-line arguments.
     p = argparse.ArgumentParser(
@@ -81,7 +59,7 @@ def run() -> int:
     docs_root_path.mkdir(parents=True, exist_ok=True)
 
     # 5. Expands templates in the configuration and writes 'pydoc-markdown.yml'.
-    pydoc_markdown = jinja2_util.expandTemplates(pydoc_markdown, config, jinja2_env)
+    pydoc_markdown = jinja2_util.expandTemplates(pydoc_markdown, config)
 
     with open(Path(docs_root, "pydoc-markdown.yml"), "w") as f:
         yaml.dump(pydoc_markdown, f)
