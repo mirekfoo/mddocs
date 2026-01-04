@@ -3,7 +3,7 @@ docs-web/api/
 docs-web-site/
 
 # .done stamps
-*.done
+.stamps/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
