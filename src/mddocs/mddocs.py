@@ -62,7 +62,8 @@ def run() -> int:
     pydoc_markdown = jinja2_util.expandTemplates(pydoc_markdown, config)
 
     with open(Path(docs_root, "pydoc-markdown.yml"), "w") as f:
-        yaml.dump(pydoc_markdown, f)
+        f.write("# GENERATED UPON mddocs.yml . DO NOT EDIT.\n")
+        f.write(yaml.dump(pydoc_markdown))
 
     docs_path = Path(docs_root, docs_dir)
     docs_reference_path = Path(docs_root, docs_dir, docs_reference_dir)
