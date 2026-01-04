@@ -5,24 +5,6 @@ title: mddocs.mddocs
 
 MDDocs main entry point.
 
-#### relative\_to
-
-```python
-def relative_to(master_path: str, slave_path: str) -> str
-```
-
-Calculate the relative path from master_path to slave_path.
-
-**Arguments**:
-
-- `master_path` - The base directory path.
-- `slave_path` - The target path to make relative.
-  
-
-**Returns**:
-
-  The relative path from master_path to slave_path.
-
 #### run
 
 ```python
