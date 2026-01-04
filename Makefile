@@ -24,8 +24,7 @@ STAMP = @if [ ! -d ".stamps" ]; then mkdir -p ".stamps"; fi && touch $@
 
 PYUTILS_DEV_INSTALL = .stamps/pyutils-dev-install.done
 
-# install editable pyutils AFTER mddocs to avoid unwanted pyutils reinstall due to github source-pinned dependency
-$(PYUTILS_DEV_INSTALL): mddocs-dev-install
+$(PYUTILS_DEV_INSTALL):
 	pip install -e deps/pyutils
 	$(STAMP)
 
@@ -47,7 +46,6 @@ MDDOCS_INSTALL = .stamps/mddocs-install.done
 
 $(MDDOCS_INSTALL):
 	pip install pydoc-markdown 
-	touch $(MDDOCS_INSTALL)
 	$(STAMP)
 MDDOCS_DIR = docs-md
 
