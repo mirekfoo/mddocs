@@ -1,4 +1,5 @@
 # docs dirs
+docs-md/*.yml
 docs-web/api/
 docs-web-site/
 
