@@ -44,9 +44,9 @@ mddocs
 
 # Dev Docs
 
-Docs|
----|
-[Markdown docs](docs-md/docs/index.md)
+Docs|Remarks
+---|---
+[Markdown docs](docs-md/docs/index.md)|Generated using [mddocs](https://github.com/mirekfoo/mddocs)
 
 # Project Development
 
