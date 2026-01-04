@@ -1,5 +1,5 @@
 # mddocs
-Markdown Documentation generator for Python projects.
+Python project API Markdown Documentation generator.
 
 # Intro
 
