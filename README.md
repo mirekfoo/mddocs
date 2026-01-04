@@ -50,4 +50,18 @@ Docs|
 
 # Project Development
 
+## Submodules
+
+The following submodules were added to this project:
+
+```bash
+git submodule add https://github.com/mirekfoo/pyutils.git deps/pyutils
+```
+
+## Clone repository
+```bash
+git clone --recurse-submodules https://github.com/mirekfoo/mddocs.git
+```
+
+## Run procedures
 * Type `make help` for available **dev** procedures

@@ -2,6 +2,11 @@ help:
 	@echo "Available targets:"
 	@echo "  help                                     - Show this help message"
 	@echo ""
+	@echo "  deps-dev-install                         - Install dependencies for development"
+	@echo "  deps-dev-update                          - Update dependencies for development"
+	@echo ""
+	@echo "  pyutils-dev-update                       - Update pyutils for development"	
+	@echo ""
 	@echo "  mkdocs CMD=build|serve|gh-deploy         - [Build / Serve/ Deploy to GitHub Pages] web docs using mkdocs"
 	@echo "  mkdocs-clean                             - Clean the web docs"
 	@echo ""
@@ -10,59 +15,56 @@ help:
 	@echo "  mddocs-run                               - Run again mddocs to update docs"	
 	@echo ""
 	@echo "  bumpver LEVEL=major|minor|patch          - Bump version"
-	
-# --------------------------------------------------
-
-MKDOCS_INSTALL = mkdocs-install.done
-
-$(MKDOCS_INSTALL):
-	pip install mkdocs mkdocs-material mkdocstrings[python] mkdocs-gen-files 
-	touch $(MKDOCS_INSTALL)
-
-MKDOCS_DIR = docs-web
-
-$(MKDOCS_DIR):
-	@if [ ! -d "$(MKDOCS_DIR)" ]; then mkdir -p "$(MKDOCS_DIR)"; fi
-
-mkdocs: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
-	PYTHONPATH=./src mkdocs $(CMD)
-
-mkdocs-clean:
-	rm -rf $(MKDOCS_DIR)
-	rm -rf docs-web-site
 
 # --------------------------------------------------
 
-PYUTILS_INSTALL = pyutils-install.done
-
-$(PYUTILS_INSTALL):
-	git clone https://github.com/mirekfoo/pyutils.git
-	pip install -e pyutils
-	touch $(PYUTILS_INSTALL)
+STAMP = @if [ ! -d ".stamps" ]; then mkdir -p ".stamps"; fi && touch $@
 
 # --------------------------------------------------
 
-MDDOCS_INSTALL = mddocs-install.done
+PYUTILS_DEV_INSTALL = .stamps/pyutils-dev-install.done
+
+# install editable pyutils AFTER mddocs to avoid unwanted pyutils reinstall due to github source-pinned dependency
+$(PYUTILS_DEV_INSTALL): mddocs-dev-install
+	pip install -e deps/pyutils
+	$(STAMP)
+
+pyutils-dev-install: $(PYUTILS_DEV_INSTALL)
+
+pyutils-dev-update: $(PYUTILS_DEV_INSTALL)
+	pushd deps/pyutils && git switch main && git pull && popd
+
+deps-dev-install: pyutils-dev-install
+deps-dev-update: pyutils-dev-update
+
+# --------------------------------------------------
+
+PYUTILS_INSTALL = $(PYUTILS_DEV_INSTALL)
+
+# --------------------------------------------------
+
+MDDOCS_INSTALL = .stamps/mddocs-install.done
 
 $(MDDOCS_INSTALL):
 	pip install pydoc-markdown 
 	touch $(MDDOCS_INSTALL)
-
+	$(STAMP)
 MDDOCS_DIR = docs-md
 
 PROJECT_SRC := $(wildcard src/mddocs/*.py)
 
-MDDOCS_GENERATE = mddocs_generate.done
+MDDOCS_GENERATE = .stamps/mddocs_generate.done
 
-PYDOC_MARKDOWN_GENERATE = pydoc-markdown_generate.done
+PYDOC_MARKDOWN_GENERATE = .stamps/pydoc-markdown_generate.done
 
-pydoc-markdown-generate: $(MDDOCS_INSTALL) $(MDDOCS_DIR) 
+$(PYDOC_MARKDOWN_GENERATE): $(MDDOCS_INSTALL) $(MDDOCS_DIR) 
 	pushd $(MDDOCS_DIR) && pydoc-markdown && popd 
+	$(STAMP)
 
 $(MDDOCS_GENERATE): $(PYUTILS_INSTALL) $(MDDOCS_INSTALL) $(PROJECT_SRC)
 	PYTHONPATH=./src python -m mddocs 
-	touch $(MDDOCS_GENERATE)
-
+	$(STAMP)
+	
 mddocs-build: \
 	$(MDDOCS_GENERATE)
 
@@ -76,11 +78,11 @@ mddocs-run: \
 
 # --------------------------------------------------
 
-BUMPVER_INSTALL = bumpver-install.done
+BUMPVER_INSTALL = .stamps/bumpver-install.done
 
 $(BUMPVER_INSTALL):
 	pip install bumpver 
-	touch $(BUMPVER_INSTALL)
+	$(STAMP)
 
 bumpver: $(BUMPVER_INSTALL)
 	bumpver update --$(LEVEL)
