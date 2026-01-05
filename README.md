@@ -22,7 +22,7 @@ pip install git+https://github.com/mirekfoo/mddocs.git
 * Create `mddocs.yml` file in the root of your project. 
     - See examples:
         - [mddocs.yml](./mddocs.yml) for this project.
-        - [mddocs.yml](https://github.com/mirekfoo/mddocs-test/blob/main/mddocs.yml) for [test](https://github.com/mirekfoo/mddocs-test) project.
+        - [mddocs.yml](https://github.com/mirekfoo/pyutils/blob/main/mddocs.yml) for [pyutils](https://github.com/mirekfoo/pyutils) project.
     - For `pydoc_markdown` section refer to [pydoc_markdown docs](https://niklasrosenstein.github.io/pydoc-markdown/).
 
 * Optionally create (assuming `docs-md` is your **mddocs** root directory):
@@ -42,10 +42,6 @@ mddocs
 * You can use [jinja2]() templates in the `pydoc_markdown` section of `mddocs.yml`.
 * Your source module(s) must have `__init__.py` file to be detected for the docs generation.
 * Set `pydoc_markdown.processors.skip_empty_modules` to `true` to include modules without *docstrings*.
-
-## Example projects using mddocs
-
-* [mddocs-test](https://github.com/mirekfoo/mddocs-test)
 
 # Dev Docs
 
