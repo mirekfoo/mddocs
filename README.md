@@ -14,6 +14,7 @@ Python project API Markdown Documentation generator.
 ## Setup
 
 * Install `mddocs`:
+
 ```bash
 pip install git+https://github.com/mirekfoo/mddocs.git
 ```
@@ -23,6 +24,10 @@ pip install git+https://github.com/mirekfoo/mddocs.git
         - [mddocs.yml](./mddocs.yml) for this project.
         - [mddocs.yml](https://github.com/mirekfoo/mddocs-test/blob/main/mddocs.yml) for [test](https://github.com/mirekfoo/mddocs-test) project.
     - For `pydoc_markdown` section refer to [pydoc_markdown docs](https://niklasrosenstein.github.io/pydoc-markdown/).
+
+* Optionally create (assuming `docs-md` is your **mddocs** root directory):
+    - `docs-md\docs\index.md` main doc page file.
+    - Other custom doc pages.
 
 ## Generate docs
 
